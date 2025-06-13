@@ -1,0 +1,10 @@
+streamlit
+numpy
+pandas
+matplotlib
+seaborn
+pgmpy
+opt_einsum
+pyro-ppl
+sktime
+scikit-learn
