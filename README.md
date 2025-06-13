@@ -1,4 +1,5 @@
 Checkout the web app here -> [http://51.20.116.180:8501/](http://51.20.116.180:8501/) 
+(hosted on aws for now because memory is limited on streamlit cloud services , will be deploying the app using django or flask soon)
 
 [https://business-sales-ai-assistant-sgzze2zamuapalxxbtbpg6.streamlit.app/](https://business-sales-ai-assistant-sgzze2zamuapalxxbtbpg6.streamlit.app/)
 
