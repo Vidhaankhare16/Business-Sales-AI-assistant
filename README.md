@@ -1,4 +1,4 @@
-Checkout the web app here -> https://business-sales-ai-assistant-sgzze2zamuapalxxbtbpg6.streamlit.app/
+Checkout the web app here -> [https://business-sales-ai-assistant-sgzze2zamuapalxxbtbpg6.streamlit.app/](https://business-sales-ai-assistant-sgzze2zamuapalxxbtbpg6.streamlit.app/)
 
 ## About-Business Sales AI Assistant
 
