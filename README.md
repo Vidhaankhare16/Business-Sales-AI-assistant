@@ -1,4 +1,6 @@
-Checkout the web app here -> [https://business-sales-ai-assistant-sgzze2zamuapalxxbtbpg6.streamlit.app/](https://business-sales-ai-assistant-sgzze2zamuapalxxbtbpg6.streamlit.app/)
+Checkout the web app here -> [http://51.20.116.180:8501/](http://51.20.116.180:8501/) 
+
+[https://business-sales-ai-assistant-sgzze2zamuapalxxbtbpg6.streamlit.app/](https://business-sales-ai-assistant-sgzze2zamuapalxxbtbpg6.streamlit.app/)
 
 ## About-Business Sales AI Assistant
 
