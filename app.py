@@ -100,15 +100,16 @@ with tab2:
     """)
     
     np.random.seed(42)
-    dates = pd.date_range(start="2021-01-01", end="2023-01-01", freq="W")
+    # Generate 3 years of data (156 weeks) to ensure enough seasonal cycles
+    dates = pd.date_range(start="2020-01-01", end="2023-01-01", freq="W")
     n = len(dates)
     
     trend = np.linspace(1000, 1500, n)
-    seasonality = 100 * np.sin(np.linspace(0, 4*np.pi, n))
+    seasonality = 100 * np.sin(np.linspace(0, 6*np.pi, n))  # 3 full cycles for 3 years
     base_sales = trend + seasonality + np.random.normal(0, 50, n)
     
     campaigns = np.zeros(n)
-    campaign_weeks = np.random.choice(n, size=10, replace=False)
+    campaign_weeks = np.random.choice(n, size=15, replace=False)
     campaigns[campaign_weeks] = 1
     
     campaign_impact = 200 * campaigns + np.random.normal(0, 30, n)
@@ -139,8 +140,14 @@ with tab2:
     train = y.iloc[:-20]
     test = y.iloc[-20:]
     
-    forecaster = AutoETS(auto=True, sp=52, n_jobs=-1)
-    forecaster.fit(train)
+    # Use try-except to handle AutoETS initialization
+    try:
+        forecaster = AutoETS(auto=True, sp=52, n_jobs=-1)  # Weekly seasonality (52 weeks/year)
+        forecaster.fit(train)
+    except ValueError as e:
+        st.warning(f"Warning: {str(e)}. Falling back to non-seasonal ETS model.")
+        forecaster = AutoETS(auto=True, sp=1, n_jobs=-1)  # Non-seasonal model as fallback
+        forecaster.fit(train)
     
     fh = ForecastingHorizon(test.index, is_relative=False)
     y_pred = forecaster.predict(fh)
@@ -234,7 +241,16 @@ with tab3:
     
     infer = VariableElimination(model)
     query = infer.query(variables=['Stockout'], evidence={'InventoryLevel_bin': inv_bin, 'LeadTime_bin': lt_bin})
-    stockout_prob = query.values[1]
+    
+    # FIX: Handle cases where query.values might have only 1 class
+    if len(query.values) == 2:  # Both classes (0 and 1) are present
+        stockout_prob = query.values[1]
+    else:  # Only one class is present (either all 0s or all 1s)
+        if query.state_names['Stockout'] == [1]:  # Only stockouts
+            stockout_prob = 1.0
+        else:  # Only no stockouts
+            stockout_prob = 0.0
+    
     st.metric("Probability of Stockout", f"{stockout_prob:.1%}")
     
     inventory_levels = np.linspace(50, 150, 101)
@@ -242,7 +258,14 @@ with tab3:
     for inv in inventory_levels:
         inv_bin = int(inv_bins.transform([[inv]])[0][0])
         query = infer.query(variables=['Stockout'], evidence={'InventoryLevel_bin': inv_bin, 'LeadTime_bin': lt_bin})
-        probs.append(query.values[1])
+        # Same handling as above
+        if len(query.values) == 2:
+            probs.append(query.values[1])
+        else:
+            if query.state_names['Stockout'] == [1]:
+                probs.append(1.0)
+            else:
+                probs.append(0.0)
     
     target_prob = 0.05
     try:
@@ -276,5 +299,7 @@ with st.sidebar:
 
 # Run the app
 if __name__ == '__main__':
-    st.set_option('deprecation.showPyplotGlobalUse', False)
+
+    plt.rcParams.update({'figure.raise_window': False})
+    
     st.write("App ready! Use the tabs above to explore different causal time series analyses.")
