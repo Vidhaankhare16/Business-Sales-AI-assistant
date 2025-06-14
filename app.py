@@ -17,7 +17,7 @@ This demo showcases how causal learning with time series can be applied to retai
 We combine `sktime` for time series forecasting and `pgmpy` for causal modeling.
 """)
 
-# Create tabs for different functionalities
+# Tabs for different functionalities
 tab1, tab2, tab3 = st.tabs([
     "Optimal Discount Analysis",
     "Marketing Campaign Impact",
@@ -32,7 +32,7 @@ with tab1:
     We use historical sales data and a causal model to estimate the impact of different discount levels.
     """)
     
-    # Generate synthetic data
+    # Generating synthetic data
     np.random.seed(42)
     dates = pd.date_range(start="2022-01-01", end="2023-01-01", freq="W")
     base_sales = np.random.normal(1000, 100, len(dates))
