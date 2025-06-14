@@ -5,18 +5,21 @@ Checkout the web app here -> [http://51.20.116.180:8501/](http://51.20.116.180:8
 
 ## About-Business Sales AI Assistant
 
-A model that uses Bayesian Networks(pgmpy) for causal inference and generates synthetic business sales data for scenario simulation and decision analysis.
+An AI assistant that predicts sales, optimizes discounts, and prevents stockouts using causal time-series modeling with pgmpy and sktime.
 
-##  Synthetic Data Description
+##  Synthetic Data Description-
+The model generates realistic retail scenarios with:
+Temporal trends (growth/seasonality) and noise to mimic real sales fluctuations.
+Causal relationships like discount curves (diminishing returns) and marketing spikes.
+Controlled variables (inventory levels, lead times) to simulate supply chain constraints.
 
-The assistant generates a dataset with the following fields:
+## Features-
+Providing prescriptive insights (not just predictions).
+Offering templates for causal forecasting in retail/supply chains.
+Demonstrating interoperability between sktime (forecasting) and pgmpy (causal AI)
 
- BasePrice -  Random base price between ₹500 and ₹2000 |
- Discount  -  Random discount between 0% and 30% applied to each sale |
- Sales     -  Sales quantity derived based on base price and discount using a defined relationship |
-
- Parameters Calculated
-- Sales prediction given values of BasePrice and/or Discount
-- Marginal probability distributions for Sales conditioned on user input
-- Visualizations of how Sales responds to changes in Discount or BasePrice via probability plots
-
+## Parameters Calculated- 
+Optimal Discount: Finds the revenue-maximizing price point using quadratic scaling.
+Campaign Lift: Measures incremental sales from marketing using causal difference-in-means.
+Stockout Risk: Bayesian probability of inventory shortages given demand forecasts.
+Safety Stock: Minimum inventory needed to keep stockout probability below 5%.
